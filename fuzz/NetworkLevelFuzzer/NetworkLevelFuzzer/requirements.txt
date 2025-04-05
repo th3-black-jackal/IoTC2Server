@@ -1,0 +1,16 @@
+attrs==25.3.0
+blinker==1.9.0
+boofuzz==0.4.2
+click==8.1.8
+colorama==0.4.6
+Flask==3.1.0
+funcy==2.0
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+psutil==7.0.0
+pydot==3.0.4
+pyparsing==3.2.3
+pyserial==3.5
+tornado==6.4.2
+Werkzeug==3.1.3

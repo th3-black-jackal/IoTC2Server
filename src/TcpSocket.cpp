@@ -1,6 +1,6 @@
 #include "TcpSocket.h"
 #include <stdexcept>
-
+#include "Logger.h"
 
 TcpSocket::TcpSocket(){
     serverFd = socket(AF_INET, SOCK_STREAM, 0);
@@ -23,16 +23,23 @@ void TcpSocket::bindSocket(int port) {
 
     if (bind(serverFd, (struct sockaddr *)&address, sizeof(address)) < 0)
         throw std::runtime_error("Bind failed");
+    Logger::Instance().Log(LogLevel::INFO, "Server binded to port");
+
+    
 }
 
 void TcpSocket::listenToSocket(){
     if (listen(serverFd, 3) < 0)
         throw std::runtime_error("Listen failed");
+    Logger::Instance().Log(LogLevel::INFO, "Start listening");
+
 }
 
 int TcpSocket::acceptConnection() {
     int clientSocket = accept(serverFd, (struct sockaddr *)&address, &addrlen);
     if (clientSocket < 0) throw std::runtime_error("Accept failed");
+    Logger::Instance().Log(LogLevel::INFO, "New connection");
+
     return clientSocket;
 }
 
