@@ -3,17 +3,18 @@
 #include "C2Server.h"
 #include "TcpSocket.h"
 #include "Logger.h"
+#include "ConfigManager.h"
 
 /*
 A temporary solution for SIGPIE signal
 */
 void sigpie_handler(int s){
     Logger::Instance().Log(LogLevel::WARN, "SIGPIE triggered - Current connection may not work properly");
-
 }
 int main(){
     signal(SIGPIPE, sigpie_handler);
     try{
+        ConfigManager::Instance().Load("config.env");
         auto server = std::make_unique<C2Server>(std::make_unique<TcpSocket>());
         server->run();
     } catch (const std::exception &ex){

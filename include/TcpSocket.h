@@ -27,6 +27,7 @@ class TcpSocket : public ISocket {
     void sendToClient(int clientSocket, const std::string& data) override;
     std::string receiveFromClient(int clientSocket) override;
     void closeConnection() override;
+    void closeClientConnection(int sockedFd) override;
     };
 
     #endif

@@ -70,3 +70,10 @@ void TcpSocket::closeConnection() {
     }
    
 }
+
+void TcpSocket::closeClientConnection(int socketFd){
+    if(socketFd >= 0){
+        close(socketFd);
+        socketFd = -1;
+    }
+}

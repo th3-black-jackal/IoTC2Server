@@ -6,8 +6,14 @@ Logger &Logger::Instance(){
     return instance;
 }
 void Logger::Log(LogLevel level, const std::string &message){
-    std::lock_guard<std::mutex> lock(logMutex);
-    std::cout<<GetColorCode(level)<<GetPrefix(level)<<message<<"\033[0m" <<std::endl;
+    std::ostream *out;
+    {
+        std::lock_guard<std::mutex> lock(logMutex);
+        out = outputStream;
+
+    }
+    bool useColor = colorEnabled.load(std::memory_order_relaxed);
+    (*out) << (useColor ? GetColorCode(level) : "") << GetPrefix(level) << message << (useColor ? "\033[0m" : "") << std::endl;
 }
 
 std::string Logger::GetPrefix(LogLevel level){
@@ -27,4 +33,13 @@ std::string Logger::GetColorCode(LogLevel level){
         case LogLevel::RESP: return "\033[1;34m";   //Blue
         default: return "\033[0m";
     }
+}
+
+void Logger::setOutputStream(std::ostream &stream){
+    std::lock_guard<std::mutex> lock(logMutex);
+    outputStream = &stream;
+}
+
+void Logger::enableColor(bool enable){
+    colorEnabled.store(enable, std::memory_order_relaxed);
 }

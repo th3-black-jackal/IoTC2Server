@@ -11,6 +11,7 @@ class ISocket {
         virtual void sendToClient(int clientSocket, const std::string& data) = 0;
         virtual std::string receiveFromClient(int clientSocket) = 0;
         virtual void closeConnection() = 0;
+        virtual void closeClientConnection(int socketFd) = 0;
     };
 
 #endif
